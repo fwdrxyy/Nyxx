@@ -5,7 +5,8 @@ My Public bot for Discord.
 - /commands for general commands
 - /hb for Homebrew resources
 - /mod for moderation commands
-    *Only works if you have a staff role. Check **Moderation.py** for details.*
+     *Only works if you have a staff role. Check **Moderation.py** for details.*
+     *Note: Some new commands I added will have the staff role check.*
 - /pn for Pretendo commands and resources
 
 Old Link: https://discord.com/oauth2/authorize?client_id=1209902528628531220&permissions=8&scope=bot+applications.commands
