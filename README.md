@@ -9,11 +9,7 @@ My Public bot for Discord.
      *Note: Some new commands I added will have the staff role check.*
 - /pn for Pretendo commands and resources
 
-Old Link: https://discord.com/oauth2/authorize?client_id=1209902528628531220&permissions=8&scope=bot+applications.commands
-
-New Link: https://discord.com/oauth2/authorize?client_id=1209902528628531220
-
-*Note: Both links should work fine. The new link is just more condensed and clean.*
+Link: https://discord.com/oauth2/authorize?client_id=1210334213929304074
 
 # Nyxx is offline. Why is that?
 I can't get a Dires server up due to their free nodes out of stock and I dont have a way of paying for their higher servers yet. So Nyxx can only be online by me running the main py file on VS Code
