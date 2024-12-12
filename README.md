@@ -15,12 +15,7 @@ New Link: https://discord.com/oauth2/authorize?client_id=1209902528628531220
 *Note: Both links should work fine. The new link is just more condensed and clean.*
 
 # Nyxx is offline. Why is that?
-Now that Nyxx is online 24/7 with https://diresnode.com/ The server can have downtime.
-
-Check, https://status.diresnode.com/ for status. (Nyxx is using EU-3)
-
-# Why is Nyxx on EU-3 now?
-I cant explain here so join the Dires discord server to find out what happened. https://discord.gg/dires-hosting-1030585192332673034
+I can't get a Dires server up due to their free nodes out of stock and I dont have a way of paying for their higher servers yet. So Nyxx can only be online by me running the main py file on VS Code
 
 # If we have problems with Nyxx, how can we reach you?
 There are two ways:
