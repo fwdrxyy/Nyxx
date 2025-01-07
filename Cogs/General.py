@@ -1,29 +1,48 @@
 import discord
 from discord.ext import commands
+from discord import ui
 
 class General(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+    
+    class PaginatorView(ui.View):
+        def __init__(self, pages):
+            super().__init__(timeout=None)
+            self.pages = pages
+            self.current_page = 0
+        
+        def create_embed(self):
+            embed = discord.Embed(title=f"Page {self.current_page + 1}/{len(self.pages)}", color=discord.Color.blue())
+            embed.description = self.pages[self.current_page]
+            return embed
 
+        @ui.button(label="Next", style=discord.ButtonStyle.primary)
+        async def next_button(self, button: ui.Button, interaction:  discord.Interaction):
+            self.current_page = (self.current_page + 1) % len(self.pages)
+            await interaction.response.edit_message(embed=self.create_embed(), view=self)
+        
+        @ui.button(label="Previous", style=discord.ButtonStyle.primary) 
+        async def prev_button(self, button: ui.Button, interaction: discord.Interaction): 
+            self.current_page = (self.current_page - 1) % len(self.pages) 
+            await interaction.response.edit_message(embed=self.create_embed(), view=self)
+            
+    @discord.slash_command(name="help", description="List all commands for Nyxx commands.") 
+    async def help(self, ctx): 
+        pages = [] 
+        for cog_name, cog in self.bot.cogs.items(): 
+            cog_commands = cog.get_commands() 
+            commands_list = "\n".join([f"/{cmd.name} - {cmd.description}" for cmd in cog_commands]) 
+            if commands_list: 
+                pages.append(f"**{cog_name}**\n{commands_list}") 
+                
+        view = self.PaginatorView(pages) 
+        await ctx.respond(embed=view.create_embed(), view=view)
+    
     # Simple ping command
     @discord.slash_command(name="ping", description="Sends the bot's latency.")
     async def ping(self, ctx):
         await ctx.respond(f"Pong! Latency is {self.bot.latency * 1000:.2f}ms")
-
-    # Help command
-    @discord.slash_command(name="commands", description="List of available commands.")
-    async def help(self, ctx):
-        help_message = """
-    # List of Commands:
-    /ping - Check bot latency
-    
-    /userinfo - Get information about a user
-    
-    /serverinfo - Get server information
-    
-    /rules - Displays the server rules. ONLY use this command in the #rules channel.
-    """
-        await ctx.respond(help_message)
 
     # User info command
     @discord.slash_command(name="userinfo", description="Gives information about a user.")
@@ -31,8 +50,8 @@ class General(commands.Cog):
         member = member or ctx.author
         
         # Format the dates for readability
-        joined_at = member.joined_at.strftime('%m-%d-%Y %H:%M:%S UTC') if member.joined_at else "Unknown"
-        created_at = member.created_at.strftime('%m-%d-%Y %H:%M:%S UTC')
+        joined_at = member.joined_at.strftime('%m-%d-%Y %H:%M UTC') if member.joined_at else "Unknown"
+        created_at = member.created_at.strftime('%m-%d-%Y %H:%M UTC')
         
         embed = discord.Embed(
             title=f"{member.name}'s Info",
@@ -44,7 +63,7 @@ class General(commands.Cog):
         embed.set_thumbnail(url=member.avatar.url if member.avatar else member.default_avatar.url)
         
         # Add fields for user information
-        embed.add_field(name="ID", value=member.id, inline=True)
+        embed.add_field(name="User ID", value=member.id, inline=True)
         embed.add_field(name="Nickname", value=member.nick if member.nick else "No nickname", inline=True)
         embed.add_field(name="Joined Server", value=joined_at, inline=True)
         embed.add_field(name="Account Created", value=created_at, inline=True)
@@ -59,7 +78,7 @@ class General(commands.Cog):
         guild = ctx.guild
         
         # Format the date for readability
-        created_at = guild.created_at.strftime('%m-%d-%Y %H:%M:%S UTC')
+        created_at = guild.created_at.strftime('%m-%d-%Y %H:%M UTC')
         
         embed = discord.Embed(
             title=f"{guild.name}'s Info",
@@ -71,7 +90,7 @@ class General(commands.Cog):
         embed.set_thumbnail(url=guild.icon.url if guild.icon else "No server icon")
 
         # Add fields for server information
-        embed.add_field(name="ID", value=guild.id, inline=True)
+        embed.add_field(name="Server ID", value=guild.id, inline=True)
         embed.add_field(name="Members", value=guild.member_count, inline=True)
         embed.add_field(name="Created At", value=created_at, inline=True)
         
@@ -99,6 +118,10 @@ class General(commands.Cog):
                 "6. No pinging randomly without a reason. If you need to ping someone, please do so in a respectful manner.",
                 "",
                 "7. Follow Discord's Terms of Service and Community Guidelines. https://discord.com/tos",
+                "",
+                "8. Follow these rules and you will be fine. If you don't, you will be warned, kicked, or banned.",
+                "",
+                "9. No Piracy. This is ment for a peaceful gaming place and a place to relax. If you are caught doing this, you will be banned.",
                 "",
                 "**More rules will be added soon in the future. Enjoy your stay here <3**",
             ]

@@ -18,10 +18,12 @@ async def change_status():
     while True:
         server_count = len(bot.guilds)
         statuses = [
-            discord.Game(name="Now Online 24/7 thanks to Dires!"),
+            discord.Game(name="Now Online via Visual Studio Code"),
             discord.Game(name="Rewritten codebase"),
             discord.Game(name="Helping people with Homebrew issues"),
-            discord.Game(name=f"Watching **{server_count}** servers"),
+            discord.Game(name=f"Watching {server_count} servers!"),
+            discord.Game(name="discord.gg/rRgeTZCCbF"),
+            discord.Game(name="youtube.com/@fwdrxyy_"),
         ]
         for status in statuses:
             await bot.change_presence(activity=status, status=discord.Status.online)
@@ -38,6 +40,5 @@ bot.load_extension('Cogs.Moderation')
 bot.load_extension('Cogs.General')
 bot.load_extension('Cogs.Homebrews')
 bot.load_extension('Cogs.Pretendo')
-bot.load_extension('Cogs.Auto_Features')
-
-bot.run("TOKEN_HERE")
+bot.load_extension('Cogs.AutoFeatures')
+bot.load_extension('Cogs.ReactionRoles')

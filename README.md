@@ -2,12 +2,7 @@
 My Public bot for Discord. 
 
 # How to use?
-- /commands for general commands
-- /hb for Homebrew resources
-- /mod for moderation commands
-     *Only works if you have a staff role. Check **Moderation.py** for details.*
-     *Note: Some new commands I added will have the staff role check.*
-- /pn for Pretendo commands and resources
+- /help for all commands! Now has a page system.
 
 Link: https://discord.com/oauth2/authorize?client_id=1316842370117009449
 
