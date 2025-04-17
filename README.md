@@ -1,4 +1,4 @@
-# Nyxx
+# Nyxx !
 My Public bot for Discord. 
 
 # How to use?
