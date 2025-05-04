@@ -15,35 +15,12 @@ class Moderation(commands.Cog):
             f'Hello there **{member.mention}**! Welcome to the server! Please read #rules and check the github section for updates! Enjoy your stay! <3'
         )
         
-    @commands.Cog.listener()
-    async def on_member_remove(self, member):
-        log_channel = self.bot.get_channel("Channel ID Here")
-        embed = discord.Embed(title="Member Left", description=f"{member.name} has left the server.", color=discord.Color.red())
-        embed.add_field(name="ID", value=member.id, inline=True)
-        embed.add_field(name="Created at", value=member.created_at, inline=True)
-        embed.set_thumbnail(url=member.avatar.url if member.avatar else member.default_avatar.url)
-        await log_channel.send(embed=embed)
-
-    # Listen for message deletions
-    @commands.Cog.listener()
-    async def on_message_delete(self, message, member: discord.member):
-        # Check if the message is from the specific server (replace with server ID)
-        specific_guild_id = "Server ID Here"  # Replace with specific server's ID
-        
-        if message.guild and message.guild.id == specific_guild_id:
-            log_channel = self.bot.get_channel("Channel ID Here")  # Replace with log channel ID
-            embed = Embed(title="Message Deleted",description=f"A message from **{message.author.name}** was deleted.",color=discord.Color.orange())
-            embed.add_field(name="Message Content", value=message.content, inline=False)
-            embed.add_field(name="Channel", value=message.channel.mention, inline=False)
-            embed.set_thumbnail(url=member.avatar.url if member.avatar else member.default_avatar.url)
-            embed.set_footer(text=f"Deleted at {datetime.utcnow().strftime('%m-%d-%Y %H:%M UTC')}")
-
     # Slash commands for moderation
     @discord.slash_command(name="kick", description="Kick a user from the server")
     async def kick(self, ctx, member: discord.Member, reason: str = "No reason provided"):
         if ctx.author.guild_permissions.kick_members:
             await member.kick(reason=reason)
-            embed = Embed(title="User Kicked", description=f"{member.mention} has been kicked.", color=discord.Color.red())
+            embed = Embed(title="User Kicked", description=f"{member.mention} has been kicked.", color=discord.Color.yellow)
             embed.add_field(name="Reason", value=reason, inline=False)
             # Adding the date and time to the footer
             embed.set_footer(text=f"Kicked by {ctx.author.name} | {datetime.utcnow().strftime('%m-%d-%Y %H:%M UTC')}")
@@ -60,11 +37,11 @@ class Moderation(commands.Cog):
             embed = Embed(title="User Banned", description=f"{member.mention} has been banned.", color=discord.Color.red())
             embed.add_field(name="Reason", value=reason, inline=False)
             # Adding the date and time to the footer
-            embed.set_footer(text=f"Banned by {ctx.author.name} | {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}")
+            embed.set_footer(text=f"Banned by {ctx.author.name} | {datetime.utcnow().strftime('%m-%d-%Y %H:%M UTC')}")
             embed.set_thumbnail(url=member.avatar.url if member.avatar else member.default_avatar.url)
             await ctx.respond(embed=embed)
         else:
-            embed = Embed(title="Permission Denied!", description="You don't have permission to ban members!", color=discord.Color.orange())
+            embed = Embed(title="Permission Denied!", description="You don't have permission to ban members!", color=discord.Color.red())
             await ctx.respond(embed=embed, ephemeral=True)
         await member.send(f"You have been banned from the server by a moderator, admin, or the owner. Reason: **{reason}**")
 
@@ -73,8 +50,13 @@ class Moderation(commands.Cog):
         role = discord.utils.get(ctx.guild.roles, name="Muted")
         await member.add_roles(role)
         await member.edit(mute=True, reason=reason)
-        await member.send(f"You have been muted in the server. Reason: **{reason}**")
-        await ctx.respond(f"{member.mention} has been muted. Reason: **{reason}**")
+        embed = Embed(title="User Muted", description=f"{member.mention} has been muted.", color=discord.Color.darker_grey())
+        embed.add_field(name="Reason", value=reason, inline=False)
+        embed.set_footer(text=f"Muted by {ctx.author.name} | {datetime.utcnow().strftime('%m-%d-%Y %H:%M UTC')}")
+        embed.set_thumbnail(url=member.avatar.url if member.avatar else member.default_avatar.url)
+        await ctx.respond(embed=embed)
+        await member.send(f"You have been muted in the server by a moderator, admin, or the owner. Reason: **{reason}**")
+        
         
     @discord.slash_command(name="unmute", description="Unmute a user from the server")
     async def unmute(self, ctx, member: discord.Member):
@@ -87,14 +69,32 @@ class Moderation(commands.Cog):
         
     @discord.slash_command(name="warn", description="Warn a user from the server")
     async def warn(self, ctx, member: discord.Member, reason: str = "No reason provided"):
-        await ctx.respond(f"{member.mention} has been warned. Reason: **{reason}**")
+        embed = Embed(title="User Warned", description=f"{member.mention} has been warned.", color=discord.Color.orange())
+        embed.add_field(name="Reason", value=reason, inline=False)
+        embed.set_footer(text=f"Warned by {ctx.author.name} | {datetime.utcnow().strftime('%m-%d-%Y %H:%M UTC')}")
+        embed.set_thumbnail(url=member.avatar.url if member.avatar else member.default_avatar.url)
+        await ctx.respond(embed=embed)
         await member.send(f"You have been warned in the server. Reason: **{reason}**")
         
     @discord.slash_command(name="unban", description="Unban a user from the server")
-    async def unban(self, ctx, member: discord.Member):
-        await ctx.guild.unban(member)
-        await ctx.respond(f"{member.mention} has been unbanned.")
-        await member.send(f"You have been unbanned from the server. We suggest you don't do whatever you did to get banned!")
+    async def unban(self, ctx, user_id: str):
+        try:
+            user = await self.bot.fetch_user(int(user_id))
+            guild = ctx.guild
+            await guild.unban(user)
+            
+            embed = Embed(title="User Unbanned", description=f"{user.mention} has been unbanned.", color=discord.Color.green())
+            embed.set_thumbnail(url=user.avatar.url if user.avatar else user.default_avatar.url)
+            await ctx.respond(embed=embed)
+            await user.send(f"You have been unbanned from the server. Don't do whatever you did to get banned again!")
+        except Exception as e:
+            await ctx.respond(f"An error occurred while unbanning the user: {str(e)}")
+        except ValueError:
+            await ctx.respond("Invalid user ID. Please enter a valid integer.")
+        except discord.NotFound:
+            await ctx.respond("User not found. Please check the user ID and try again.")
+
+
     
 def setup(bot):
     bot.add_cog(Moderation(bot))

@@ -27,7 +27,7 @@ class General(commands.Cog):
             self.current_page = (self.current_page - 1) % len(self.pages) 
             await interaction.response.edit_message(embed=self.create_embed(), view=self)
             
-    @discord.slash_command(name="help", description="List all commands for Nyxx commands.") 
+    @discord.slash_command(name="help", description="List all commands for Nyxx") 
     async def help(self, ctx): 
         pages = [] 
         for cog_name, cog in self.bot.cogs.items(): 
@@ -98,34 +98,31 @@ class General(commands.Cog):
         await ctx.respond(embed=embed)
         
     # Add more commands and features as needed
-    @discord.slash_command(name="rules", description="Displays the server rules. ONLY use this command in the #rules channel.")
-    async def rules(self, ctx):
-        # Check if the command is used in the #rules channel
-            rules = [
-                "@everyone",
-                "# Rules!!",
-                "",
-                "1. Be respectful to others. This is a friendly community and common sense applies.",
-                "",
-                "2. No spamming or flooding. Please do not post the same message multiple times. You can in the spam channel if there is a channel.",
-                "",
-                "3. No NSFW content. Any NSFW content found in ANY channel will be removed and the user will be warned. Too many warnings will result in a ban, kick or mute.",
-                "",
-                "4. No hate speech or discrimination. We do not tolerate any form of hate speech or discrimination.",
-                "",
-                "5. No Phishing Links To Malware, Screamers, IPs, Etc. This is a safe space for everyone. If you are caught doing this, you will be banned.",
-                "",
-                "6. No pinging randomly without a reason. If you need to ping someone, please do so in a respectful manner.",
-                "",
-                "7. Follow Discord's Terms of Service and Community Guidelines. https://discord.com/tos",
-                "",
-                "8. Follow these rules and you will be fine. If you don't, you will be warned, kicked, or banned.",
-                "",
-                "9. No Piracy. This is ment for a peaceful gaming place and a place to relax. If you are caught doing this, you will be banned.",
-                "",
-                "**More rules will be added soon in the future. Enjoy your stay here <3**",
-            ]
-            await ctx.respond("\n".join(rules))
+    @discord.slash_command(name="rules", description="Displays the server rules. ONLY use this command in the #rules channel.") 
+    async def rules(self, ctx): 
+        rules = [
+            "1. Be respectful to others. This is a friendly community and common sense applies.",
+            "",
+            "2. No spamming or flooding. Please do not post the same message multiple times. You can in the spam channel if there is a channel.", 
+            "",
+            "3. No NSFW content. Any NSFW content found in ANY channel will be removed and the user will be warned. Too many warnings will result in a ban, kick or mute.", 
+            "",
+            "4. No hate speech or discrimination. We do not tolerate any form of hate speech or discrimination.",
+            "", 
+            "5. No Phishing Links To Malware, Screamers, IPs, Etc. This is a safe space for everyone. If you are caught doing this, you will be banned.",
+            "",
+            "6. No pinging randomly without a reason. If you need to ping someone, please do so in a respectful manner.",
+            "",
+            "7. Follow Discord's Terms of Service and Community Guidelines. https://discord.com/tos", 
+            "",
+            "8. Follow these rules and you will be fine. If you don't, you will be warned, kicked, or banned. 3 warnings or more will result in a ban or kick depending the staff's decision.", 
+            "",
+            "9. No Piracy. This is meant for a peaceful gaming place and a place to relax. If you are caught doing this, you will be banned.", 
+            "",
+            "# More rules will be added soon in the future. Enjoy your stay here <3" 
+        ] 
+        embed = discord.Embed(title="Rules", description="\n".join(rules), color=0x00ff00) 
+        await ctx.respond(embed=embed)
 
 def setup(bot):
     bot.add_cog(General(bot))

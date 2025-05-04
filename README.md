@@ -13,7 +13,7 @@ Link: https://discord.com/oauth2/authorize?client_id=1316842370117009449
 Unfortunately, I can't find an affordable service to host my bot, nor host it myself, because I cant spend my money at the moment. if you guys find a service for please dm me on Discord
 
 # How can I get my logs working?
-Since the logging part in **Moderation.py** requires the server ID and channel ID, you'll need to enable Dev Mode in settings. (A Screenshot will be added later.) To get the channel ID, right-click your #logs channel and find the button "Copy Channel ID," then paste it into the parts of the code where it asks for it. 
+Since the logging part has it's own cog now. Nyxx will find a log channel in your server to send the logs in. If she cant find one, it will select a random private channel.
 
 To get the server ID, right-click the server name and scroll until you see "Security Actions" or something similar. You'll see the button "Copy Server ID," then paste it into the code where it's asking for the server ID
 
@@ -21,4 +21,4 @@ To get the server ID, right-click the server name and scroll until you see "Secu
 - My Discord: **fwdrxyy_**
 
 # Any questions to ask about Nyxx?
-Feel free to dm me on Discord! Or, email me! my Discord and Email are in the section above this one.
+Feel free to dm me on Discord! 

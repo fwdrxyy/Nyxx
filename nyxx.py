@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands, tasks
+
 import asyncio
 
 intents = discord.Intents.default()
@@ -9,9 +10,13 @@ bot = commands.Bot(intents=intents)
 
 @bot.event
 async def on_ready():
+     await bot.sync_commands()
+
+@bot.event
+async def on_ready():
     print(f'Nyxx is online and ready to go!')
     change_status.start()
-
+    
 @tasks.loop(seconds=10)  # Change status every 10 seconds
 async def change_status():
     await bot.wait_until_ready()  # Ensure the bot is ready
@@ -19,11 +24,11 @@ async def change_status():
         server_count = len(bot.guilds)
         statuses = [
             discord.Game(name="Now Online via Visual Studio Code"),
-            discord.Game(name="Rewritten codebase"),
             discord.Game(name="Helping people with Homebrew issues"),
             discord.Game(name=f"Watching {server_count} servers!"),
-            discord.Game(name="discord.gg/rRgeTZCCbF"),
+            discord.Game(name="discord.gg/QQXVaFbD4K"),
             discord.Game(name="youtube.com/@fwdrxyy_"),
+            discord.Game(name="New Feature! ModMail System"),
         ]
         for status in statuses:
             await bot.change_presence(activity=status, status=discord.Status.online)
@@ -35,6 +40,7 @@ async def on_ready():
         change_status.start()
   
 
+     
 # Load cogs (modules)
 bot.load_extension('Cogs.Moderation')
 bot.load_extension('Cogs.General')
@@ -42,4 +48,6 @@ bot.load_extension('Cogs.Homebrews')
 bot.load_extension('Cogs.Pretendo')
 bot.load_extension('Cogs.AutoFeatures')
 bot.load_extension('Cogs.ReactionRoles')
-bot.load_extention('Cogs.ModMail')
+bot.load_extension('Cogs.ModMail')
+bot.load_extension('Cogs.Logging')
+bot.load_extension('Cogs.ServerManagement')
