@@ -63,7 +63,7 @@ class ServerManagement(commands.Cog):
     async def remove_slowmode(self, ctx, channel: discord.TextChannel):
         if await self.is_allowed(ctx):
             await channel.edit(slowmode_delay=0)
-            await ctx.respond(f"Slow mode has been removed from {channel.mention}!", ephemeral=True)
+            await ctx.respond(f"Slow mode has been removed from {channel.mention}.", ephemeral=True)
         else:
             await ctx.respond("You don't have permission to use this command! Only the server owner and staff members are allowed to use this command!", ephemeral=True)
 
