@@ -6,7 +6,7 @@ from datetime import datetime
 class Logging(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
+        
     def find_log_channel(self, guild):
         """Returns an existing log channel or defaults to a private staff/admin channel."""
         
@@ -23,6 +23,21 @@ class Logging(commands.Cog):
         ]
 
         return random.choice(staff_channels) if staff_channels else None  # Pick random staff/admin channel if available
+    
+    async def log_action(self, guild: discord.Guild, action: str, member: discord.Member, reason: str, moderator: discord.Member):
+        """Logs moderation actions in the appropriate log channel"""
+        log_channel = await self.find_log_channel(guild)
+
+        if not log_channel:
+            return  # Skip logging if no appropriate channel is found
+
+        embed = discord.Embed(title=f"Moderation Action: {action}", color=discord.Color.dark_blue())
+        embed.add_field(name="User", value=f"{member.mention} ({member.id})", inline=True)
+        embed.add_field(name="Moderator", value=moderator.mention, inline=True)
+        embed.add_field(name="Reason", value=reason, inline=False)
+        embed.set_footer(text=f"Timestamp: {datetime.utcnow().strftime('%m-%d-%Y %H:%M UTC')}")
+
+        await log_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
@@ -37,6 +52,7 @@ class Logging(commands.Cog):
             )
             embed.add_field(name="Guild ID", value=guild.id, inline=True)
             embed.add_field(name="Member Count", value=guild.member_count, inline=True)
+            
 
             await log_channel.send(embed=embed)
 

@@ -2,11 +2,19 @@ import discord
 from discord.ext import commands
 from discord import Embed
 from datetime import datetime
+import sqlite3
 
 class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
+        self.conn = sqlite3.connect("warnings.db") # Create a SQLite database for warnings
+        self.cursor = self.conn.cursor()
+        self.cursor.execute("""
+            CREATE TABLE IF NOT EXISTS warnings (
+                    user_id INTEGER PRIMARY KEY,
+                    warning_count INTEGER DEFAULT 0
+            )
+        """)
     # Events
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -14,7 +22,39 @@ class Moderation(commands.Cog):
         await member.dm_channel.send(
             f'Hello there **{member.mention}**! Welcome to the server! Please read #rules and check the github section for updates! Enjoy your stay! <3'
         )
-        
+    
+    async def warn_user(self, ctx, member, reason, guild, moderator):
+        """Warns a user and tracks warning count"""
+        user_id = member.id
+
+        # Fetch current warnings or insert new record
+        self.cursor.execute("SELECT warning_count FROM warnings WHERE user_id = ?", (user_id,))
+        result = self.cursor.fetchone()
+
+        if result:
+            warning_count = result[0] + 1
+            self.cursor.execute("UPDATE warnings SET warning_count = ? WHERE user_id = ?", (warning_count, user_id))
+        else:
+            warning_count = 1
+            self.cursor.execute("INSERT INTO warnings (user_id, warning_count) VALUES (?, ?)", (user_id, warning_count))
+
+        self.conn.commit()
+
+        embed = discord.Embed(title="User Warned", description=f"{member.mention} has been warned ({warning_count}/5).", color=discord.Color.orange())
+        embed.add_field(name="Reason", value=reason, inline=False)
+        embed.set_footer(text=f"Warned by {ctx.author.name} | {datetime.utcnow().strftime('%m-%d-%Y %H:%M UTC')}")
+        embed.set_thumbnail(url=member.avatar.url if member.avatar else member.default_avatar.url)
+        await ctx.respond(embed=embed)
+
+        if warning_count >= 3:
+            await member.kick(reason="Exceeded warning limit")
+            await ctx.send(f"{member.mention} has been **kicked** for reaching 3 warnings. If they get two more, they're banned. ")
+
+        if warning_count >= 5:
+            await member.ban(reason="Excessive violations")
+            await ctx.send(f"{member.mention} has been **banned** for reaching 5 warnings.")
+            
+    
     # Slash commands for moderation
     @discord.slash_command(name="kick", description="Kick a user from the server")
     async def kick(self, ctx, member: discord.Member, reason: str = "No reason provided"):
@@ -69,32 +109,35 @@ class Moderation(commands.Cog):
         
     @discord.slash_command(name="warn", description="Warn a user from the server")
     async def warn(self, ctx, member: discord.Member, reason: str = "No reason provided"):
-        embed = Embed(title="User Warned", description=f"{member.mention} has been warned.", color=discord.Color.orange())
-        embed.add_field(name="Reason", value=reason, inline=False)
-        embed.set_footer(text=f"Warned by {ctx.author.name} | {datetime.utcnow().strftime('%m-%d-%Y %H:%M UTC')}")
-        embed.set_thumbnail(url=member.avatar.url if member.avatar else member.default_avatar.url)
-        await ctx.respond(embed=embed)
-        await member.send(f"You have been warned in the server. Reason: **{reason}**")
+        """Warns a user and triggers moderation action if needed"""
+        await self.warn_user(ctx, member, reason)
         
-    @discord.slash_command(name="unban", description="Unban a user from the server")
-    async def unban(self, ctx, user_id: str):
-        try:
-            user = await self.bot.fetch_user(int(user_id))
-            guild = ctx.guild
-            await guild.unban(user)
+    @discord.slash_command(name="check_warnings", description="View a user's warnings")
+    async def check_warnings(self, ctx, member: discord.Member):
+        self.cursor.execute("SELECT warning_count FROM warnings WHERE user_id = ?", (member.id,))
+        result = self.cursor.fetchone()
+        count = result[0] if result else 0
+
+        await ctx.respond(f"{member.mention} has **{count} warnings**.")
+        
+    @discord.slash_command(name="reset_warnings", description="Reset a user's warnings")
+    async def reset_warnings(self, ctx, member: discord.Member):
+        self.cursor.execute("DELETE FROM warnings WHERE user_id = ?", (member.id,))
+        self.conn.commit()
+        await ctx.respond(f"{member.mention}'s warnings have been reset.")
+        
+    @discord.slash_command(name="reduce_warnings", description="Reduce a user's warnings by 1")
+    async def reduce_warnings(self, ctx, member: discord.Member):
+        self.cursor.execute("SELECT warning_count FROM warnings WHERE user_id = ?", (member.id,))
+        result = self.cursor.fetchone()
+
+        if result and result[0] > 0:
+            self.cursor.execute("UPDATE warnings SET warning_count = warning_count - 1 WHERE user_id = ?", (member.id,))
+            self.conn.commit()
+            await ctx.respond(f"{member.mention}'s warnings have been **reduced by 1**.")
+        else:
+            await ctx.respond(f"{member.mention} has no warnings to reduce.")       
             
-            embed = Embed(title="User Unbanned", description=f"{user.mention} has been unbanned.", color=discord.Color.green())
-            embed.set_thumbnail(url=user.avatar.url if user.avatar else user.default_avatar.url)
-            await ctx.respond(embed=embed)
-            await user.send(f"You have been unbanned from the server. Don't do whatever you did to get banned again!")
-        except Exception as e:
-            await ctx.respond(f"An error occurred while unbanning the user: {str(e)}")
-        except ValueError:
-            await ctx.respond("Invalid user ID. Please enter a valid integer.")
-        except discord.NotFound:
-            await ctx.respond("User not found. Please check the user ID and try again.")
-
-
-    
+      
 def setup(bot):
     bot.add_cog(Moderation(bot))
