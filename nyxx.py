@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands, tasks
-
 import asyncio
+import os
+from dotenv import load_dotenv
 
 intents = discord.Intents.default()
 intents.members = True
@@ -11,6 +12,9 @@ bot = commands.Bot(intents=intents)
 @bot.event
 async def on_ready():
      await bot.sync_commands()
+
+load_dotenv()
+TOKEN = os.getenv("DISCORD_TOKEN")
 
 @bot.event
 async def on_ready():
@@ -51,3 +55,5 @@ bot.load_extension('Cogs.ReactionRoles')
 bot.load_extension('Cogs.ModMail')
 bot.load_extension('Cogs.Logging')
 bot.load_extension('Cogs.ServerManagement')
+
+bot.run(TOKEN)
