@@ -13,9 +13,6 @@ bot = commands.Bot(intents=intents)
 async def on_ready():
      await bot.sync_commands()
 
-load_dotenv()
-TOKEN = os.getenv("DISCORD_TOKEN")
-
 @bot.event
 async def on_ready():
     print(f'Nyxx is online and ready to go!')
@@ -55,5 +52,3 @@ bot.load_extension('Cogs.ReactionRoles')
 bot.load_extension('Cogs.ModMail')
 bot.load_extension('Cogs.Logging')
 bot.load_extension('Cogs.ServerManagement')
-
-bot.run(TOKEN)
