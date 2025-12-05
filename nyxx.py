@@ -29,6 +29,7 @@ async def change_status():
             discord.Game(name=f"Watching {server_count} servers!"),
             discord.Game(name="discord.gg/QQXVaFbD4K"),
             discord.Game(name="youtube.com/@fwdrxyy_"),
+            discord.Game(name="fwdrxyy.github.io/")
             discord.Game(name="New Feature! ModMail System"),
         ]
         for status in statuses:
