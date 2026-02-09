@@ -101,27 +101,37 @@ class General(commands.Cog):
     @discord.slash_command(name="rules", description="Displays the server rules. ONLY use this command in the #rules channel.") 
     async def rules(self, ctx): 
         rules = [
-            "1. Be respectful to others. This is a friendly community and common sense applies.",
+            "1. All text channels are English only. Mods must be able to read all messages clearly. If you're a non English speaker, use a translator",
             "",
-            "2. No spamming or flooding. Please do not post the same message multiple times. You can in the spam channel if there is a channel.", 
+            "2. No harassment of others. Racism, sexism, xenophobia, transphobia, homophobia, misogyny, etc. are not allowed.", 
             "",
-            "3. No NSFW content. Any NSFW content found in ANY channel will be removed and the user will be warned. Too many warnings will result in a ban, kick or mute.", 
+            "3. Keep all discussion civil and in the correct channels. Mods may asks you to move your conversation to the correct channel.", 
             "",
-            "4. No hate speech or discrimination. We do not tolerate any form of hate speech or discrimination.",
+            "4. No inappropriate language. Remain respectful of others at all times.",
             "", 
-            "5. No Phishing Links To Malware, Screamers, IPs, Etc. This is a safe space for everyone. If you are caught doing this, you will be banned.",
+            "5. Keep personal drama out of chat. Keep personal drama out of chat. Only in dms please",
             "",
-            "6. No pinging randomly without a reason. If you need to ping someone, please do so in a respectful manner.",
+            "6. No impersonation. Do not impersonate other users, moderators, and/or famous personalities.",
             "",
-            "7. Follow Discord's Terms of Service and Community Guidelines. https://discord.com/tos", 
+            "7. No spamming. Do not flood chat rooms with messages. Only allowed channel for spamming is #botspam", 
             "",
-            "8. Follow these rules and you will be fine. If you don't, you will be warned, kicked, or banned. 3 warnings or more will result in a ban or kick depending the staff's decision.", 
+            "8. No NSFW content. Do not post or have conversations around NSFW content.", 
             "",
-            "9. No Piracy. This is meant for a peaceful gaming place and a place to relax. If you are caught doing this, you will be banned.", 
+            "9. No inappropriate or offensive usernames, status's or profile pictures. You may be asked to change these if they violate our rules.", 
             "",
-            "# More rules will be added soon in the future. Enjoy your stay here <3" 
+            "10. No politics. Talking about serious issues involving government officials, political parties, religions, or geo-political disagreements is not allowed. Even if these topics are approached in a civil manner, this is not the correct space for these conversations. Unless a channel is made for it"
+            "",
+            "11. No self-promotion, soliciting, or advertising. This also includes user DMs. #self-promo"
+            "",
+            "12. No malicious links. Any link that track IP addresses, or lead to malicious websites that contain malware will be removed."
+            "",
+            "13. Don't evade filters, This applies to both words and links. If something is censored, it is censored for a reason!"
+            "",
+            "14. Follow the Discord ToS and Community Guidelines. Terms of Service: https://discordapp.com/terms \nCommunity Guidelines: https://discord.com/guidelines"
+            "",
+            "15. **Staff hold final say**. Listen to and respect the volunteers that keep this server running."
         ] 
-        embed = discord.Embed(title="Rules", description="\n".join(rules), color=0x00ff00) 
+        embed = discord.Embed(title="Rules for my server(s)", description="\n".join(rules), color=0x00ff00) 
         await ctx.respond(embed=embed)
 
 def setup(bot):
