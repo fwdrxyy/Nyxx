@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands, tasks
 import asyncio
 import os
-"from dotenv import load_dotenv"
+from dotenv import load_dotenv
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -32,7 +32,7 @@ async def change_status():
             discord.Game(name="discord.gg/Cc6q3BgTSR"),
             discord.Game(name="youtube.com/@fwdrxyy_"),
             discord.Game(name="fwdrxyy.github.io/"),
-            discord.Game(name="New Feature! ModMail System"),
+            discord.Game(name="New Section! Role Management"),
         ]
         for status in statuses:
             await bot.change_presence(activity=status, status=discord.Status.online)
@@ -56,3 +56,12 @@ bot.load_extension('Cogs.ModMail')
 bot.load_extension('Cogs.Logging')
 bot.load_extension('Cogs.ServerManagement')
 bot.load_extension('Cogs.RoleManagement')
+bot.load_extension('Cogs.FunnyStuff')
+
+# Load environment variables
+load_dotenv()
+
+# Get the token from .env
+token = os.getenv('DISCORD_TOKEN')
+
+bot.run(token)
