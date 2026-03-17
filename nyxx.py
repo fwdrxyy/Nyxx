@@ -56,7 +56,7 @@ bot.load_extension('Cogs.ModMail')
 bot.load_extension('Cogs.Logging')
 bot.load_extension('Cogs.ServerManagement')
 bot.load_extension('Cogs.RoleManagement')
-bot.load_extension('Cogs.FunnyStuff')
+bot.load_extension('Cogs.Misc')
 
 # Load environment variables
 load_dotenv()
