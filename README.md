@@ -19,5 +19,8 @@ Since the logging part has it's own cog now. Nyxx will find a log channel in you
 
 To get a channel ID, first you'll need to turn on Dev Mode. (You can look that up) Once you have that, hover over the channel you want to copy the ID from. Right click the channel. A few options down should be an option called "Copy Channel ID". click that and paste it IN YOUR OWN CODE where its asking for channel ID
 
+# Showcase of the help command
+<img width="525" height="368" alt="Screen recording 2026-06-04 8 14 36 AM" src="https://github.com/user-attachments/assets/7ad6fa19-6ecb-4511-ac02-20c9cdc99a7a" />
+
 # If we have problems or questions with Nyxx, how can we reach you?
 - My Discord: **fwdrxyy_**
