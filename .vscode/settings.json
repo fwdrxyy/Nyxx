@@ -1,5 +1,7 @@
 {
     "C_Cpp.errorSquiggles": "disabled",
     "files.autoSave": "afterDelay",
-    "files.autoSaveWhenNoErrors": true
+    "files.autoSaveWhenNoErrors": true,
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python.defaultInterpreterPath": "/usr/local/python/3.12.1/bin/python"
 }

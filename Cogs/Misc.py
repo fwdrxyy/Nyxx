@@ -38,7 +38,5 @@ class Misc(commands.Cog):
         conn.close()
         return count
 
-    
-
 def setup(bot):
     bot.add_cog(Misc(bot))

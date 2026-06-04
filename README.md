@@ -7,7 +7,7 @@ I worked hard for a few months to get far on my bot. This is my first ever Disco
 # How to use?
 - /help for all commands! Now has a page system.
 
-Link: https://discord.com/oauth2/authorize?client_id=1316842370117009449
+Link: https://discord.com/oauth2/authorize?client_id=1505187122418811020
 
 # Nyxx is offline. Why is that?
 Unfortunately, I can't find an affordable service to host my bot, nor host it myself, because I cant spend my money at the moment. if you guys find a service for please dm me on Discord. 
