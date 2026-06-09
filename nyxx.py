@@ -52,10 +52,10 @@ bot.load_extension('Cogs.Homebrews')
 bot.load_extension('Cogs.Pretendo')
 bot.load_extension('Cogs.AutoFeatures')
 bot.load_extension('Cogs.ReactionRoles')
-bot.load_extension('Cogs.ModMail')
 bot.load_extension('Cogs.Logging')
 bot.load_extension('Cogs.ServerManagement')
 bot.load_extension('Cogs.RoleManagement')
+bot.load_extension('Cogs.Reporting')
 bot.load_extension('Cogs.Misc')
 
 # Load environment variables
