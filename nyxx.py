@@ -28,11 +28,11 @@ async def change_status():
         statuses = [
             discord.Game(name="Now Online via Visual Studio Code"),
             discord.Game(name="Helping people with Homebrew issues"),
-            discord.Game(name=f"Watching {server_count} servers carefully..."),
-            discord.Game(name="discord.gg/Cc6q3BgTSR"),
+            discord.Game(name=f"Watching {server_count} server(s)"),
+            discord.Game(name="discord.gg/JJq7wdfSHK"),
             discord.Game(name="youtube.com/@fwdrxyy_"),
             discord.Game(name="fwdrxyy.github.io/"),
-            discord.Game(name="New Section! Role Management"),
+            discord.Game(name="New feature! more fun commands!"),
         ]
         for status in statuses:
             await bot.change_presence(activity=status, status=discord.Status.online)
@@ -57,6 +57,7 @@ bot.load_extension('Cogs.ServerManagement')
 bot.load_extension('Cogs.RoleManagement')
 bot.load_extension('Cogs.Reporting')
 bot.load_extension('Cogs.Misc')
+bot.load_extension('Cogs.Fun')
 
 # Load environment variables
 load_dotenv()
