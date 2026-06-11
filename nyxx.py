@@ -56,7 +56,6 @@ bot.load_extension('Cogs.Logging')
 bot.load_extension('Cogs.ServerManagement')
 bot.load_extension('Cogs.RoleManagement')
 bot.load_extension('Cogs.Reporting')
-bot.load_extension('Cogs.Misc')
 bot.load_extension('Cogs.Fun')
 
 # Load environment variables

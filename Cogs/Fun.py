@@ -10,66 +10,6 @@ class Fun(commands.Cog):
         self.bot = bot
         self.db_path = 'barn_counts.db'
         self.init_db()
-         
-    # Hug command
-    @discord.slash_command(name="hug", description="Give someone a virtual hug!")
-    async def hug(self, ctx, user: discord.Member):
-        hug_messages = [
-            f"{ctx.author.mention} gives {user.mention} a warm hug! ❤️",
-            f"{ctx.author.mention} hugs {user.mention}! That's sweet! 🤗",
-            f"{user.mention} receives a comforting hug from {ctx.author.mention}! 💕",
-            f"{ctx.author.mention} wraps their arms around {user.mention}... *HUG* 🫂",
-            f"Aww, {ctx.author.mention} hugs {user.mention}! 🥰",
-            f"{ctx.author.mention} gives {user.mention} the biggest hug ever! 🤗💛",
-        ]
-        
-        gif_url = await self.get_random_gif("hug")
-        
-        embed = discord.Embed(
-            description=random.choice(hug_messages),
-            color=discord.Color.pink()
-        )
-        if gif_url:
-            embed.set_image(url=gif_url)
-        await ctx.respond(embed=embed)
-    
-    async def get_random_gif(self, query):
-        """Fetch a random GIF from Giphy API"""
-        try:
-            async with aiohttp.ClientSession() as session:
-                # Using Giphy's public beta API key
-                url = f"https://api.giphy.com/v1/gifs/search?q={query}&api_key=dc6zaTOxFJmzC&limit=50"
-                async with session.get(url) as resp:
-                    if resp.status == 200:
-                        data = await resp.json()
-                        if data['data']:
-                            gif = random.choice(data['data'])
-                            return gif['images']['original']['url']
-        except Exception as e:
-            print(f"Error fetching GIF: {e}")
-        return None
-    
-    # Slap command
-    @discord.slash_command(name="slap", description="Playfully slap someone!")
-    async def slap(self, ctx, user: discord.Member):
-        slap_messages = [
-            f"{ctx.author.mention} slaps {user.mention}! SMACK! 👋",
-            f"{ctx.author.mention} gives {user.mention} a gentle slap! 💥",
-            f"*SLAP* {ctx.author.mention} slaps {user.mention}! Did they deserve it? 👀",
-            f"{user.mention} got slapped by {ctx.author.mention}! Ouch! 😵",
-            f"{ctx.author.mention} unleashes a mighty slap on {user.mention}! 💫",
-            f"WACK! {ctx.author.mention} slaps {user.mention}! That's gotta hurt! 🤕",
-        ]
-        
-        gif_url = await self.get_random_gif("slap")
-        
-        embed = discord.Embed(
-            description=random.choice(slap_messages),
-            color=discord.Color.red()
-        )
-        if gif_url:
-            embed.set_image(url=gif_url)
-        await ctx.respond(embed=embed)
     
     # Rock Paper Scissors command
     @discord.slash_command(name="rps", description="Play Rock, Paper, Scissors against the bot!")
