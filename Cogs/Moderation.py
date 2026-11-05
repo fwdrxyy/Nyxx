@@ -23,7 +23,7 @@ class Moderation(commands.Cog):
             f'Hello there **{member.mention}**! Welcome to the server! Please read #rules and check the github section for updates! Enjoy your stay! <3'
         )
     
-    async def warn_user(self, ctx, member, reason, guild, moderator):
+    async def warn_user(self, ctx, member, reason):
         """Warns a user and tracks warning count"""
         user_id = member.id
 

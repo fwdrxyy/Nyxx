@@ -30,7 +30,7 @@ class Logging(commands.Cog):
     
     async def log_action(self, guild: discord.Guild, action: str, member: discord.Member, reason: str, moderator: discord.Member):
         """Logs moderation actions in the appropriate log channel"""
-        log_channel = await self.find_log_channel(guild)
+        log_channel = self.find_log_channel(guild)
 
         if not log_channel:
             return  # Skip logging if no appropriate channel is found
@@ -73,6 +73,8 @@ class Logging(commands.Cog):
             embed.add_field(name="ID", value=member.id, inline=True)
             embed.add_field(name="Created at", value=member.created_at, inline=True)
             embed.set_thumbnail(url=member.avatar.url if member.avatar else member.default_avatar.url)
+
+            await log_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):

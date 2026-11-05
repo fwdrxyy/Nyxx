@@ -1,12 +1,5 @@
 import discord
-from discord.ext import commands, tasks
-import asyncio
-import aiohttp
-
-intents = discord.Intents.default()
-intents.members = True
-
-bot = commands.Bot(intents=intents)
+from discord.ext import commands
 
 class AutoFeatures(commands.Cog):
     def __init__(self, bot):
@@ -36,8 +29,6 @@ class AutoFeatures(commands.Cog):
                 )
             except discord.Forbidden:
                 print("Bot lacks permission to delete messages. Please update the bot perms via role or Contact the maker/owner of the bot to fix via Discord Dev Portal.")
-
-        await self.bot.process_commands(message)
 
 def setup(bot):
     bot.add_cog(AutoFeatures(bot))

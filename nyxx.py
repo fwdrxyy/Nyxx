@@ -13,12 +13,10 @@ bot = commands.Bot(intents=intents)
 
 @bot.event
 async def on_ready():
-     await bot.sync_commands()
-
-@bot.event
-async def on_ready():
+    await bot.sync_commands()
     print(f'Nyxx is online and ready to go!')
-    change_status.start()
+    if not change_status.is_running():
+        change_status.start()
     
 @tasks.loop(seconds=10)  # Change status every 10 seconds
 async def change_status():
@@ -38,13 +36,6 @@ async def change_status():
             await bot.change_presence(activity=status, status=discord.Status.online)
             await asyncio.sleep(10)
 
-@bot.event
-async def on_ready():
-    if not change_status.is_running():
-        change_status.start()
-  
-
-     
 # Load cogs (modules)
 bot.load_extension('Cogs.Administration')
 bot.load_extension('Cogs.Community')
